@@ -39,7 +39,6 @@ logger = logging.getLogger()
 
 
 def go(args):
-
     run = wandb.init(job_type="train_random_forest")
     run.config.update(args)
 
@@ -98,12 +97,11 @@ def go(args):
     # HINT: use mlflow.sklearn.save_model
     mlflow.sklearn.save_model(
         sk_pipe,
-        "random_forest_out",
+        "random_forest_dir",
         signature=infer_signature(X_val, y_pred),
         serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
         input_example=X_val.head()
     )
-
     ######################################
 
     ######################################
