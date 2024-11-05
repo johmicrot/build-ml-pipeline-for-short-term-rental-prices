@@ -3,10 +3,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.10.15
   - pip=23.3.1
   - requests=2.24.0
   - pyarrow
   - pip:
       - mlflow==2.8.1
       - wandb==0.16.0
-      - git+https://github.com/udacity/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
+#      - git+https://github.com/johmicrot/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
+      - git+https://github.com/johmicrot/build-ml-pipeline-for-short-term-rental-prices#egg=wandb-utils&subdirectory=components"
+#
+
