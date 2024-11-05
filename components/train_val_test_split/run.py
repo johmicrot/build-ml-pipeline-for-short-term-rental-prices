@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script splits the provided dataframe in test and remainder
+This script splits the provided dataframe into test and remainder sets
 """
 import argparse
 import logging
@@ -8,21 +8,19 @@ import pandas as pd
 import wandb
 import tempfile
 from sklearn.model_selection import train_test_split
-from wandb_utils.log_artifact import log_artifact
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
-
 
 def go(args):
 
     run = wandb.init(job_type="train_val_test_split")
     run.config.update(args)
 
-    # Download input artifact. This will also note that this script is using this
-    # particular version of the artifact
+    # Download input artifact
     logger.info(f"Fetching artifact {args.input}")
-    artifact_local_path = run.use_artifact(args.input).file()
+    artifact = run.use_artifact(args.input)
+    artifact_local_path = artifact.file()
 
     df = pd.read_csv(artifact_local_path)
 
@@ -34,21 +32,21 @@ def go(args):
         stratify=df[args.stratify_by] if args.stratify_by != 'none' else None,
     )
 
-    # Save to output files
-    for df, k in zip([trainval, test], ['trainval', 'test']):
+    # Save and log output files as artifacts
+    for df_split, k in zip([trainval, test], ['trainval', 'test']):
         logger.info(f"Uploading {k}_data.csv dataset")
-        with tempfile.NamedTemporaryFile("w") as fp:
 
-            df.to_csv(fp.name, index=False)
-
-            log_artifact(
-                f"{k}_data.csv",
-                f"{k}_data",
-                f"{k} split of dataset",
-                fp.name,
-                run,
+        with tempfile.NamedTemporaryFile("w", delete=False) as fp:
+            df_split.to_csv(fp.name, index=False)
+            artifact = wandb.Artifact(
+                name=f"{k}_data",
+                type="dataset",
+                description=f"{k} split of dataset"
             )
+            artifact.add_file(fp.name, name=f"{k}_data.csv")
+            run.log_artifact(artifact)
 
+    run.finish()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Split test and remainder")
