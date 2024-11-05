@@ -28,7 +28,7 @@ def go(args):
     drop_indexes = art_df['price'].between(args.min_price, args.max_price)
     art_df = art_df[drop_indexes].copy()
 
-    idx = art_df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    idx = art_df['longitude'].between(-74.25, -73.50) & art_df['latitude'].between(40.5, 41.2)
     art_df = art_df[idx].copy()
 
 
