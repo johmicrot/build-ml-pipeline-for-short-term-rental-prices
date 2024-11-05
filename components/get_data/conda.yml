@@ -10,7 +10,3 @@ dependencies:
   - pip:
       - mlflow==2.8.1
       - wandb==0.16.0
-#      - git+https://github.com/johmicrot/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
-      - git+https://github.com/johmicrot/build-ml-pipeline-for-short-term-rental-prices#egg=wandb-utils&subdirectory=components"
-#
-
