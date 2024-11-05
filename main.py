@@ -21,7 +21,7 @@ _steps = [
 
 
 # This automatically reads in the configuration
-@hydra.main(config_name='config')
+@hydra.main(version_base=None, config_path='.', config_name='config')
 def go(config: DictConfig):
 
     # Setup the wandb experiment. All runs will be grouped under this name
@@ -38,9 +38,8 @@ def go(config: DictConfig):
         if "download" in active_steps:
             # Download file and load in W&B
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/get_data",
-                "main",
-                version='main',
+                os.path.join(config['main']['components_repository'], "get_data"),
+                entry_point="main",
                 env_manager="conda",
                 parameters={
                     "sample": config["etl"]["sample"],
@@ -49,7 +48,6 @@ def go(config: DictConfig):
                     "artifact_description": "Raw file as downloaded"
                 },
             )
-
         if "basic_cleaning" in active_steps:
             ##################
             # Implement here #
