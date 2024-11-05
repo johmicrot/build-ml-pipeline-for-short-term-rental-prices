@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
+  - python=3.10.15
   - mlflow=1.30.0
   - ipython=7.21.0
   - notebook=6.2.0
