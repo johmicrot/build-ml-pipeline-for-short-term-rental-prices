@@ -6,21 +6,27 @@ entry_points:
     parameters:
 
       input_artifact:
+        description:  The file which will be cleaned
         type: string
 
       output_artifact:
+        description:  The file which has been cleaned,  will be saved in the cloud
         type: string
 
       output_type:
+        description:  The type of file for the output artifact
         type: string
 
       output_description:
+        description:  Additional information for the W&B artifact
         type: string
 
       min_price:
+        description:  Min price value checked with the input_artifact
         type: float
 
       max_price:
+        description:  Max price value checked with the input_artifact
         type: float
 
 
